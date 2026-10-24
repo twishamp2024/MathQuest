@@ -1,9 +1,13 @@
 # MathQuest: Adaptive AI-Based Educational Toy
 
-[![Tests](https://img.shields.io/badge/Tests-34%20Passed-brightgreen)](file:///f:/Antigravity/MathQuest/backend/tests)
-[![Coverage](https://img.shields.io/badge/Coverage-89%25-green)](file:///f:/Antigravity/MathQuest/docs/IMPLEMENTATION_STATUS.md)
+[![Tests](https://img.shields.io/badge/Tests-34%20Passed-brightgreen)](backend/tests)
+[![Coverage](https://img.shields.io/badge/Coverage-89%25-green)](docs/IMPLEMENTATION_STATUS.md)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Target Budget](https://img.shields.io/badge/Prototype%20BOM-%E2%89%A4%20%E2%82%B91%2C500%20INR-orange)](docs/HARDWARE_BOM.md)
+
+---
+
+## About
 
 **MathQuest** is an interactive, low-cost mathematics learning product designed for children aged approximately 8–14.
 
