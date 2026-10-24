@@ -1,0 +1,9 @@
+[wokwi]
+version = 1
+firmware = "../.pio/build/esp32dev/firmware.bin"
+elf = "../.pio/build/esp32dev/firmware.elf"
+
+# Networking configuration for connecting Wokwi ESP32 to local backend server
+# Note: For Wokwi CLI or Wokwi VS Code extension, access local host via host.wokwi.internal
+# For Wokwi Web club members with Wokwi IoT Gateway, private gateway mode is supported.
+rfc2217 = true

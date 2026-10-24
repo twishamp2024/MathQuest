@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathQuest — Adaptive AI Educational Toy</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20width=%2232%22%20height=%2232%22><text y=%2226%22 font-size=%2226%22>🧮</text></svg>">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🧮</div>
+      <div>
+        <h1>MathQuest</h1>
+        <p style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">Adaptive AI Mathematics Toy</p>
+      </div>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-btn active" data-tab="play">🎮 Adventure</button>
+      <button class="nav-btn" data-tab="simulator">📟 Virtual ESP32 Toy</button>
+      <button class="nav-btn" data-tab="mastery">📊 Mastery</button>
+    </div>
+
+    <div class="learner-badge">
+      <span id="header-learner-alias">Guest Learner</span>
+      <span class="streak-pill" id="header-streak-count">🔥 0</span>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+
+    <!-- TAB 1: ADVENTURE WEB GAME -->
+    <section id="tab-play" class="view-section active">
+
+      <!-- Profile Creation & Resume Screen -->
+      <div id="screen-welcome" class="card">
+        <h2 style="color:var(--primary); font-size:1.6rem; margin-bottom:0.5rem;">Welcome, Math Explorer! 🚀</h2>
+        <p style="color:var(--text-muted);">MathQuest adapts to your skill level, offering personalized challenges across 10 exciting math domains.</p>
+        
+        <div class="welcome-grid">
+          <!-- Create New Anonymous Profile -->
+          <div class="welcome-box">
+            <h3>Start New Adventure</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Pick a fun code-name or start right away!</p>
+            <input type="text" id="input-alias" class="input-field" placeholder="e.g. Star Explorer" maxlength="32">
+            <button id="btn-create-profile" class="btn">Create Profile</button>
+          </div>
+
+          <!-- Resume Existing Profile -->
+          <div class="welcome-box">
+            <h3>Resume Adventure</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Enter your anonymous Learner ID code:</p>
+            <input type="text" id="input-resume-id" class="input-field" placeholder="e.g. mq_x9k2p1">
+            <button id="btn-resume-profile" class="btn btn-secondary">Resume Game</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Play Screen -->
+      <div id="screen-play" style="display:none;">
+
+        <!-- Session Start / Topic Selector Box -->
+        <div id="session-start-box" class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="color:var(--primary);">Choose Your Learning Path</h3>
+            <button id="btn-switch-learner" class="btn btn-secondary" style="width:auto; padding:0.4rem 0.8rem; font-size:0.85rem;">Switch Player</button>
+          </div>
+          <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:1.25rem;">
+            Select a specific math topic or let the <strong>Adaptive Learning Engine</strong> choose the optimal concept in your Zone of Proximal Development.
+          </p>
+          <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+            <select id="select-topic-filter" class="input-field" style="margin-bottom:0; flex:1; min-width:260px;">
+              <option value="">🎯 All Topics (Adaptive Journey)</option>
+            </select>
+          </div>
+          <button id="btn-start-session" class="btn">Start Learning Session ⚡</button>
+        </div>
+
+        <!-- Question Active Box -->
+        <div id="question-active-box" class="card" style="display:none;">
+          <div class="question-header">
+            <span class="topic-tag" id="q-topic-tag">Addition & Subtraction</span>
+            <span class="difficulty-stars" id="q-difficulty-stars">★★★☆☆</span>
+          </div>
+
+          <div class="question-box">
+            <div class="question-prompt" id="q-prompt-text">Loading question...</div>
+            <div class="recommendation-note" id="q-recommendation-note"></div>
+          </div>
+
+          <!-- Multiple Choice Options Container -->
+          <div id="options-container" class="options-grid"></div>
+
+          <!-- Numeric Entry Keypad Container (for direct numeric entry) -->
+          <div id="keypad-container" class="keypad-container" style="display:none;">
+            <div class="numeric-display" id="numeric-display">0</div>
+            <div class="keypad-grid">
+              <button class="key-btn" data-key="7">7</button>
+              <button class="key-btn" data-key="8">8</button>
+              <button class="key-btn" data-key="9">9</button>
+              <button class="key-btn" data-key="4">4</button>
+              <button class="key-btn" data-key="5">5</button>
+              <button class="key-btn" data-key="6">6</button>
+              <button class="key-btn" data-key="1">1</button>
+              <button class="key-btn" data-key="2">2</button>
+              <button class="key-btn" data-key="3">3</button>
+              <button class="key-btn" data-key="-">-</button>
+              <button class="key-btn" data-key="0">0</button>
+              <button class="key-btn" data-key="/">/</button>
+              <button class="key-btn" data-key="clear" style="color:var(--error);">C</button>
+              <button class="key-btn" data-key=".">.</button>
+              <button class="key-btn" data-key="backspace">⌫</button>
+            </div>
+            <button id="btn-submit-numeric" class="btn" style="margin-top:0.75rem;">Submit Answer ✔</button>
+          </div>
+
+          <!-- Hints and Scaffolding -->
+          <div class="hint-container">
+            <button id="btn-hint-1" class="btn btn-secondary" style="width:auto; padding:0.5rem 1rem; font-size:0.9rem;">💡 Need a Hint?</button>
+            <button id="btn-hint-2" class="btn btn-secondary" style="width:auto; padding:0.5rem 1rem; font-size:0.9rem;">🔍 Step-by-Step Help</button>
+          </div>
+          <div id="hint-display-card" class="hint-card"></div>
+
+          <!-- Feedback Box -->
+          <div id="answer-feedback-box" class="feedback-box"></div>
+
+          <!-- Next Question Button -->
+          <button id="btn-next-question" class="btn" style="display:none; margin-top:1rem;">Next Question ➔</button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TAB 2: VIRTUAL ESP32 TOY SIMULATOR -->
+    <section id="tab-simulator" class="view-section">
+      <div class="card" style="text-align:center; margin-bottom:1rem;">
+        <h2 style="color:var(--primary); margin-bottom:0.25rem;">Virtual ESP32 Educational Toy</h2>
+        <p style="font-size:0.9rem; color:var(--text-muted);">
+          Complete emulation of the physical hardware device with SSD1306 128x64 OLED, tactile pushbuttons, status LEDs, and Piezo buzzer.
+        </p>
+      </div>
+
+      <!-- Physical Toy Casing -->
+      <div class="toy-casing">
+        <div class="toy-header-bar">
+          <div class="toy-logo">MATHQUEST ESP32</div>
+          <div class="led-strip">
+            <div class="led-indicator led-wifi" id="led-wifi" title="Wi-Fi Connection LED"></div>
+            <div class="led-indicator led-success" id="led-success" title="Correct Answer LED"></div>
+            <div class="led-indicator led-error" id="led-error" title="Error Buzz LED"></div>
+          </div>
+        </div>
+
+        <!-- 128x64 OLED Display -->
+        <div class="oled-frame">
+          <div class="oled-screen" id="oled-screen">
+            <div class="oled-status-line">
+              <span id="oled-status-left">MATHQUEST</span>
+              <span id="oled-status-right">WIFI:OK</span>
+            </div>
+            <div class="oled-body" id="oled-content-body">
+              <div>Booting firmware v1.0.0...</div>
+            </div>
+            <div class="oled-footer">
+              <span id="oled-footer-text">[▲▼] Select [SEL] Submit</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Physical Pushbuttons -->
+        <div class="toy-controls">
+          <div class="hw-button-wrap">
+            <button class="hw-btn" id="hw-btn-up">▲</button>
+            <span class="hw-label">UP</span>
+          </div>
+          <div class="hw-button-wrap">
+            <button class="hw-btn" id="hw-btn-down">▼</button>
+            <span class="hw-label">DOWN</span>
+          </div>
+          <div class="hw-button-wrap">
+            <button class="hw-btn hw-btn-select" id="hw-btn-select">OK</button>
+            <span class="hw-label">SELECT</span>
+          </div>
+          <div class="hw-button-wrap">
+            <button class="hw-btn hw-btn-back" id="hw-btn-hint">💡</button>
+            <span class="hw-label">HINT</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width:460px; margin:1rem auto 0 auto; text-align:center; font-size:0.85rem; color:var(--text-muted);">
+        ⌨️ <strong>Keyboard shortcuts:</strong> Arrow Up/Down to navigate options, <strong>Enter</strong> or <strong>Space</strong> to select/submit, <strong>H</strong> for hint.
+      </div>
+    </section>
+
+    <!-- TAB 3: CURRICULUM & MASTERY -->
+    <section id="tab-mastery" class="view-section">
+      <div class="card">
+        <h2 style="color:var(--primary); margin-bottom:0.5rem;">Curriculum Mastery & Progress</h2>
+        <p style="color:var(--text-muted); margin-bottom:1.5rem;">
+          Track your concept mastery scores calculated in real time using the deterministic EWMA model.
+        </p>
+        <div class="mastery-grid" id="mastery-topics-container">
+          <!-- Populated dynamically via API -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/audio.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/simulator.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mathquest-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MATHQUEST_ENV=production
+      - MATHQUEST_PORT=8000
+      - MATHQUEST_DATABASE_URL=sqlite:////app/data/mathquest.db
+      - MATHQUEST_AI_PROVIDER=offline
+    volumes:
+      - mathquest-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  mathquest-data:
